@@ -1,6 +1,6 @@
 //------------------------------------------------------
 // Homework 1
-// Written by: (your name and student ID)
+// Written by: James Harron (23807128)
 // ECE 373 Object-Oriented Software Design, Section 001 - Fall 2026
 // The University of Arizona
 //------------------------------------------------------
@@ -14,7 +14,8 @@ package edu.arizona.ece373.hw1;
  */
 public class Matrix {
 
-    // TODO: declare the private field `data` holding a two-dimensional array of int.
+    // Declaration of the private field `data` holding a two-dimensional array of int.
+    private int[][] data;
 
     /**
      * Creates a matrix of the given size whose cells are all zero.
@@ -24,9 +25,12 @@ public class Matrix {
      * @throws IllegalArgumentException if {@code rows} or {@code columns} is less than 1
      */
     public Matrix(int rows, int columns) {
-        // TODO: check that rows >= 1 and columns >= 1 (IllegalArgumentException otherwise),
-        // TODO: then allocate the array field with that many rows and columns.
-        throw new UnsupportedOperationException("TODO");
+        // Checks that rows >= 1 and columns >= 1 (IllegalArgumentException otherwise),
+        if (rows < 1 || columns < 1) {
+            throw new IllegalArgumentException("Rows and columns must be at least 1.");
+        }
+        // Allocates the array field with that many rows and columns.
+        this.data = new int[rows][columns];
     }
 
     /**
