@@ -6,14 +6,13 @@
 //------------------------------------------------------
 package edu.arizona.ece373.hw1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for {@link Matrix} (Task 1).
@@ -53,11 +52,22 @@ class MatrixTest {
     }
 
     @Test
-    @Disabled("TODO: remove this annotation once you have written the test")
     @DisplayName("getData returns the values that were passed to the constructor")
     void getDataReturnsTheStoredValues() {
-        // TODO: build a matrix from an int[][] you write out by hand, then check with
-        // TODO: assertArrayEquals that getData() gives those values back.
+        // Build a matrix from an int[][] you write out by hand, then check with
+        int[][] expected = {
+                {1, 2, 3},
+                {4, 5, 6}
+        };
+
+        Matrix matrix = new Matrix(expected);
+        // assertArrayEquals that getData() gives those values back.
+        assertArrayEquals(expected, matrix.getData());
+
+        // Verify defensive copying: mutating returned array should not alter internal state
+        int[][] retrieved = matrix.getData();
+        retrieved[0][0] = 99;
+        assertEquals(1, matrix.get(0, 0));
     }
 
     @Test

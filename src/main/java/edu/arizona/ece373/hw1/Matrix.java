@@ -52,8 +52,14 @@ public class Matrix {
      * @return the current values, {@code result[row][column]}
      */
     public int[][] getData() {
-        // TODO: return the cells. Think about whether you hand out the field itself or a copy.
-        throw new UnsupportedOperationException("TODO");
+        // Returns the cells. Think about whether you hand out the field itself or a copy. Returns a deep copy.
+        int rows = data.length;
+        int cols = data[0].length;
+        int[][] copy = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            System.arraycopy(data[i], 0, copy[i], 0, cols);
+        }
+        return copy;
     }
 
     /**
@@ -83,8 +89,8 @@ public class Matrix {
      * @return the row count, always at least 1
      */
     public int getRows() {
-        // TODO: return the number of rows.
-        throw new UnsupportedOperationException("TODO");
+        // Returns the number of rows.
+        return data.length;
     }
 
     /**
@@ -93,8 +99,8 @@ public class Matrix {
      * @return the column count, always at least 1
      */
     public int getColumns() {
-        // TODO: return the number of columns.
-        throw new UnsupportedOperationException("TODO");
+        // Returns the number of columns.
+        return data[0].length;
     }
 
     /**
@@ -106,8 +112,9 @@ public class Matrix {
      * @throws IndexOutOfBoundsException if the coordinate is outside the matrix
      */
     public int get(int row, int column) {
-        // TODO: bounds-check the coordinate and return the cell.
-        throw new UnsupportedOperationException("TODO");
+        // Bounds-check the coordinate and return the cell.
+        checkBounds(row, column);
+        return data[row][column];
     }
 
     /**
@@ -146,6 +153,22 @@ public class Matrix {
             if (input[i].length != expectedCols) {
                 throw new IllegalArgumentException("Jagged matrix detected: Row " + i + " length does not match.");
             }
+        }
+    }
+
+    /**
+     * Validates that cell coordinates fall within valid row and column boundaries.
+     *
+     * @param row    the row coordinate to check
+     * @param column the column coordinate to check
+     * @throws IndexOutOfBoundsException if either coordinate is out of bounds
+     */
+    private void checkBounds(int row, int column) {
+        if (row < 0 || row >= getRows() || column < 0 || column >= getColumns()) {
+            throw new IndexOutOfBoundsException(
+                    String.format("Coordinates (%d, %d) out of bounds for matrix size %dx%d",
+                            row, column, getRows(), getColumns())
+            );
         }
     }
 }
