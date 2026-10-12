@@ -41,9 +41,9 @@ public class Matrix {
      *                                  columns, has a {@code null} row, or is jagged
      */
     public Matrix(int[][] data) {
-        // TODO: validate the argument (not null, at least 1 row, at least 1 column,
-        // TODO: every row the same length) and store it in the field.
-        throw new UnsupportedOperationException("TODO");
+        // Validates the argument (not null, at least 1 row, at least 1 column,
+        // Every row the same length) and stores it in the field.
+        setData(data);
     }
 
     /**
@@ -65,8 +65,16 @@ public class Matrix {
      * @throws IllegalArgumentException if {@code data} is not a legal matrix body
      */
     public void setData(int[][] data) {
-        // TODO: validate exactly like the array constructor, then store.
-        throw new UnsupportedOperationException("TODO");
+        // Validates exactly like the array constructor, then stores.
+        validateData(data);
+        int rows = data.length;
+        int cols = data[0].length;
+
+        // Creates a deep copy to prevent external mutation of internal state
+        this.data = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            System.arraycopy(data[i], 0, this.data[i], 0, cols);
+        }
     }
 
     /**
@@ -113,5 +121,31 @@ public class Matrix {
     public void set(int row, int column, int value) {
         // TODO: bounds-check the coordinate and write the cell.
         throw new UnsupportedOperationException("TODO");
+    }
+
+    /**
+     * Validates that the input 2D array is non-null, non-empty, contains no null rows,
+     * and is strictly rectangular.
+     *
+     * @param input the 2D array to check
+     * @throws IllegalArgumentException if the array fails any matrix requirements
+     */
+    private void validateData(int[][] input) {
+        if (input == null || input.length == 0) {
+            throw new IllegalArgumentException("Matrix data cannot be null or empty.");
+        }
+        if (input[0] == null || input[0].length == 0) {
+            throw new IllegalArgumentException("Matrix rows cannot be null or empty.");
+        }
+
+        int expectedCols = input[0].length;
+        for (int i = 0; i < input.length; i++) {
+            if (input[i] == null) {
+                throw new IllegalArgumentException("Row at index " + i + " is null.");
+            }
+            if (input[i].length != expectedCols) {
+                throw new IllegalArgumentException("Jagged matrix detected: Row " + i + " length does not match.");
+            }
+        }
     }
 }
