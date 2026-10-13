@@ -1,6 +1,6 @@
 //------------------------------------------------------
 // Homework 1
-// Written by: (your name and student ID)
+// Written by: James Harron (23807128)
 // ECE 373 Object-Oriented Software Design, Section 001 - Fall 2026
 // The University of Arizona
 //------------------------------------------------------
@@ -41,11 +41,36 @@ public class MatrixOutlinePrinter implements MatrixPrinter {
      */
     @Override
     public String print(Matrix matrix) {
-        // TODO: reject a null matrix, then build the frame with a StringBuilder:
-        // TODO:   a border line, one line per row, a border line, each ending in '\n'.
-        // TODO: the inside of each line must come from printRow(matrix, row) so that
-        // TODO: BoolMatrixPrinter can change it by overriding that one method.
-        throw new UnsupportedOperationException("TODO");
+        // Rejects a null matrix.
+        if (matrix == null) {
+            throw new IllegalArgumentException("Matrix cannot be null.");
+        }
+        StringBuilder sb = new StringBuilder();
+        int cols = matrix.getColumns();
+        int rows = matrix.getRows();
+
+        // Top border line: e.g. "+----+\n"
+        sb.append(CORNER);
+        for (int c = 0; c < cols; c++) {
+            sb.append(HORIZONTAL);
+        }
+        sb.append(CORNER).append('\n');
+
+        // Middle content lines: e.g. "|    |\n"
+        for (int r = 0; r < rows; r++) {
+            sb.append(VERTICAL);
+            sb.append(printRow(matrix, r));
+            sb.append(VERTICAL).append('\n');
+        }
+
+        // Bottom border line: e.g. "+----+\n"
+        sb.append(CORNER);
+        for (int c = 0; c < cols; c++) {
+            sb.append(HORIZONTAL);
+        }
+        sb.append(CORNER).append('\n');
+
+        return sb.toString();
     }
 
     /**
@@ -59,7 +84,11 @@ public class MatrixOutlinePrinter implements MatrixPrinter {
      * @return the characters that belong between the two border characters of this line
      */
     protected String printRow(Matrix matrix, int row) {
-        // TODO: return one blank character per column.
-        throw new UnsupportedOperationException("TODO");
+        int cols = matrix.getColumns();
+        StringBuilder sb = new StringBuilder();
+        for (int c = 0; c < cols; c++) {
+            sb.append(' ');
+        }
+        return sb.toString();
     }
 }
