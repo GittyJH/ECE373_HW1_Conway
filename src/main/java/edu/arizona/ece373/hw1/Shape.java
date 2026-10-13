@@ -1,6 +1,6 @@
 //------------------------------------------------------
 // Homework 1
-// Written by: (your name and student ID)
+// Written by: James Harron (23807128)
 // ECE 373 Object-Oriented Software Design, Section 001 - Fall 2026
 // The University of Arizona
 //------------------------------------------------------
@@ -14,7 +14,8 @@ package edu.arizona.ece373.hw1;
  */
 public class Shape extends Matrix {
 
-    // TODO: declare the private field `name`.
+    // Declares the private field `name`.
+    private String name;
 
     /**
      * Creates a named shape from a pattern of zeroes and ones.
@@ -26,8 +27,10 @@ public class Shape extends Matrix {
      */
     public Shape(String name, int[][] data) {
         super(data);
-        // TODO: check the name, check that every cell is 0 or 1, then store the name.
-        throw new UnsupportedOperationException("TODO");
+        // Checks the name, checks that every cell is 0 or 1, then stores the name.
+        validateName(name);
+        validateBinaryCells();
+        this.name = name;
     }
 
     /**
@@ -36,8 +39,7 @@ public class Shape extends Matrix {
      * @return the shape name
      */
     public String getName() {
-        // TODO: return the name.
-        throw new UnsupportedOperationException("TODO");
+        return name;
     }
 
     /**
@@ -47,8 +49,8 @@ public class Shape extends Matrix {
      * @throws IllegalArgumentException if the name is {@code null} or blank
      */
     public void setName(String name) {
-        // TODO: check and store the name.
-        throw new UnsupportedOperationException("TODO");
+        validateName(name);
+        this.name = name;
     }
 
     /**
@@ -57,9 +59,14 @@ public class Shape extends Matrix {
      * @return a new beehive shape
      */
     public static Shape beehive() {
-        // TODO: return a Shape named "Beehive" holding
-        // TODO:   0 1 1 0 / 1 0 0 1 / 0 1 1 0
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Beehive" holding
+        //  0 1 1 0 / 1 0 0 1 / 0 1 1 0
+        int[][] pattern = {
+                {0, 1, 1, 0},
+                {1, 0, 0, 1},
+                {0, 1, 1, 0}
+        };
+        return new Shape("Beehive", pattern);
     }
 
     /**
@@ -68,9 +75,14 @@ public class Shape extends Matrix {
      * @return a new boat shape
      */
     public static Shape boat() {
-        // TODO: return a Shape named "Boat" holding
-        // TODO:   1 1 0 / 1 0 1 / 0 1 0
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Boat" holding
+        //  1 1 0 / 1 0 1 / 0 1 0
+        int[][] pattern = {
+                {1, 1, 0},
+                {1, 0, 1},
+                {0, 1, 0}
+        };
+        return new Shape("Boat", pattern);
     }
 
     /**
@@ -79,8 +91,11 @@ public class Shape extends Matrix {
      * @return a new blinker shape
      */
     public static Shape blinker() {
-        // TODO: return a Shape named "Blinker" holding a single row 1 1 1.
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Blinker" holding a single row 1 1 1.
+        int[][] pattern = {
+                {1, 1, 1}
+        };
+        return new Shape("Blinker", pattern);
     }
 
     /**
@@ -90,9 +105,14 @@ public class Shape extends Matrix {
      * @return a new glider shape
      */
     public static Shape glider() {
-        // TODO: return a Shape named "Glider" holding
-        // TODO:   0 1 0 / 0 0 1 / 1 1 1
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Glider" holding
+        //  0 1 0 / 0 0 1 / 1 1 1
+        int[][] pattern = {
+                {0, 1, 0},
+                {0, 0, 1},
+                {1, 1, 1}
+        };
+        return new Shape("Glider", pattern);
     }
 
     /**
@@ -101,9 +121,13 @@ public class Shape extends Matrix {
      * @return a new block shape
      */
     public static Shape block() {
-        // TODO: return a Shape named "Block" holding
-        // TODO:   1 1 / 1 1
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Block" holding
+        //  1 1 / 1 1
+        int[][] pattern = {
+                {1, 1},
+                {1, 1}
+        };
+        return new Shape("Block", pattern);
     }
 
     /**
@@ -112,9 +136,13 @@ public class Shape extends Matrix {
      * @return a new toad shape
      */
     public static Shape toad() {
-        // TODO: return a Shape named "Toad" holding
-        // TODO:   0 1 1 1 / 1 1 1 0
-        throw new UnsupportedOperationException("TODO");
+        // Returns a Shape named "Toad" holding
+        //  0 1 1 1 / 1 1 1 0
+        int[][] pattern = {
+                {0, 1, 1, 1},
+                {1, 1, 1, 0}
+        };
+        return new Shape("Toad", pattern);
     }
 
     /**
@@ -124,7 +152,45 @@ public class Shape extends Matrix {
      * @param args ignored
      */
     public static void main(String[] args) {
-        // TODO: create a Beehive and a Boat and print them through a MatrixPrinter variable.
-        throw new UnsupportedOperationException("TODO");
+        Shape beehive = Shape.beehive();
+        Shape boat = Shape.boat();
+
+        MatrixPrinter printer = new BoolMatrixPrinter();
+
+        System.out.println(beehive.getName() + ":");
+        System.out.print(printer.print(beehive));
+
+        System.out.println(boat.getName() + ":");
+        System.out.print(printer.print(boat));
+    }
+
+    /**
+     * Validates that the provided name is non-null and non-blank.
+     *
+     * @param name the string to check
+     * @throws IllegalArgumentException if {@code name} is {@code null} or empty/whitespace
+     */
+    private void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Shape name must not be null or blank.");
+        }
+    }
+
+    /**
+     * Validates that every cell in the underlying matrix is either 0 or 1.
+     *
+     * @throws IllegalArgumentException if any cell value is not 0 or 1
+     */
+    private void validateBinaryCells() {
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+                int val = get(r, c);
+                if (val != 0 && val != 1) {
+                    throw new IllegalArgumentException(
+                            String.format("Shape cells must be 0 or 1, found %d at (%d, %d).", val, r, c)
+                    );
+                }
+            }
+        }
     }
 }
