@@ -93,17 +93,40 @@ class GameOfLifeTest {
     }
 
     @Test
-    @Disabled("TODO: remove this annotation once you have written the test")
     @DisplayName("a still life does not change")
     void stillLifeDoesNotChange() {
-        // TODO: place a Beehive or a Boat on a field big enough that it does not touch the edge,
-        // TODO: remember the printed field, run a few steps, and check that nothing changed.
+        GameOfLife game = new GameOfLife(6, 6);
+        game.addShape(Shape.beehive(), 1, 1);
+
+        MatrixPrinter printer = new BoolMatrixPrinter();
+        String initialRender = printer.print(game);
+
+        // Step through multiple generations
+        for (int i = 0; i < 5; i++) {
+            game.step();
+        }
+
+        // Verify the state remains identical to the initial pattern
+        assertEquals(initialRender, printer.print(game));
     }
 
     @Test
-    @Disabled("TODO: remove this annotation once you have written the test")
     @DisplayName("a lone live cell dies of underpopulation")
     void loneCellDies() {
-        // TODO: switch a single cell on, call step once, and check that the field is empty.
+        GameOfLife game = new GameOfLife(3, 3);
+
+        // Switch on a single cell in the center
+        game.set(1, 1, GameOfLife.ALIVE);
+
+        // Advance by one generation
+        game.step();
+
+        // Verify all cells are dead (0)
+        for (int r = 0; r < game.getRows(); r++) {
+            for (int c = 0; c < game.getColumns(); c++) {
+                assertEquals(GameOfLife.DEAD, game.get(r, c),
+                        String.format("Expected dead cell at (%d, %d)", r, c));
+            }
+        }
     }
 }
