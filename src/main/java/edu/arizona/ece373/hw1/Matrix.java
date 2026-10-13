@@ -89,7 +89,6 @@ public class Matrix {
      * @return the row count, always at least 1
      */
     public int getRows() {
-        // Returns the number of rows.
         return data.length;
     }
 
@@ -99,7 +98,6 @@ public class Matrix {
      * @return the column count, always at least 1
      */
     public int getColumns() {
-        // Returns the number of columns.
         return data[0].length;
     }
 
@@ -112,7 +110,6 @@ public class Matrix {
      * @throws IndexOutOfBoundsException if the coordinate is outside the matrix
      */
     public int get(int row, int column) {
-        // Bounds-check the coordinate and return the cell.
         checkBounds(row, column);
         return data[row][column];
     }
@@ -126,8 +123,8 @@ public class Matrix {
      * @throws IndexOutOfBoundsException if the coordinate is outside the matrix
      */
     public void set(int row, int column, int value) {
-        // TODO: bounds-check the coordinate and write the cell.
-        throw new UnsupportedOperationException("TODO");
+        checkBounds(row, column);
+        data[row][column] = value;
     }
 
     /**
