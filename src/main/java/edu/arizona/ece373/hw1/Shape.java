@@ -152,6 +152,9 @@ public class Shape extends Matrix {
      * @param args ignored
      */
     public static void main(String[] args) {
+        System.out.println("=== Welcome to the Game of Life Shape Showcase ===");
+        System.out.println();
+
         Shape beehive = Shape.beehive();
         Shape boat = Shape.boat();
 
@@ -162,6 +165,8 @@ public class Shape extends Matrix {
 
         System.out.println(boat.getName() + ":");
         System.out.print(printer.print(boat));
+
+        System.out.println("=== Showcase Completed Successfully ===");
     }
 
     /**

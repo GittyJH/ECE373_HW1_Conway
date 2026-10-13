@@ -1,6 +1,6 @@
 //------------------------------------------------------
 // Homework 1
-// Written by: (your name and student ID)
+// Written by: James Harron (23807128)
 // ECE 373 Object-Oriented Software Design, Section 001 - Fall 2026
 // The University of Arizona
 //------------------------------------------------------
@@ -50,9 +50,22 @@ public class GameOfLife extends Matrix {
      *                                  negative, or if the shape does not fit entirely on the field
      */
     public void addShape(Shape shape, int row, int column) {
-        // TODO: reject null, negative coordinates, and shapes that would stick out of the field;
-        // TODO: then copy every cell of the shape onto the field.
-        throw new UnsupportedOperationException("TODO");
+        // Reject null, negative coordinates, and shapes that would stick out of the field;
+        if (shape == null) {
+            throw new IllegalArgumentException("Shape cannot be null.");
+        }
+        if (row < 0 || column < 0) {
+            throw new IllegalArgumentException("Placement row and column must be non-negative.");
+        }
+        if (row + shape.getRows() > getRows() || column + shape.getColumns() > getColumns()) {
+            throw new IllegalArgumentException("Shape does not fit entirely within the field bounds.");
+        }
+        // Copies every cell of the shape onto the field.
+        for (int r = 0; r < shape.getRows(); r++) {
+            for (int c = 0; c < shape.getColumns(); c++) {
+                set(row + r, column + c, shape.get(r, c));
+            }
+        }
     }
 
     /**
@@ -62,9 +75,34 @@ public class GameOfLife extends Matrix {
      * then install it with the inherited {@link Matrix#setData(int[][])}.</p>
      */
     public void step() {
-        // TODO: allocate a local int[getRows()][getColumns()], fill it by applying the rules to
-        // TODO: the current generation, then call setData(next).
-        throw new UnsupportedOperationException("TODO");
+        int rows = getRows();
+        int cols = getColumns();
+        int[][] nextGeneration = new int[rows][cols];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                int liveNeighbours = countLiveNeighbours(r, c);
+                int currentState = get(r, c);
+
+                if (currentState == ALIVE) {
+                    // Underpopulation or Overpopulation -> cell dies; otherwise survives
+                    if (liveNeighbours < 2 || liveNeighbours > 3) {
+                        nextGeneration[r][c] = DEAD;
+                    } else {
+                        nextGeneration[r][c] = ALIVE;
+                    }
+                } else {
+                    // Reproduction -> dead cell becomes alive
+                    if (liveNeighbours == 3) {
+                        nextGeneration[r][c] = ALIVE;
+                    } else {
+                        nextGeneration[r][c] = DEAD;
+                    }
+                }
+            }
+        }
+
+        setData(nextGeneration);
     }
 
     /**
@@ -75,9 +113,30 @@ public class GameOfLife extends Matrix {
      * @return a number between 0 and 8
      */
     public int countLiveNeighbours(int row, int column) {
-        // TODO: look at the eight surrounding coordinates and count the live ones,
-        // TODO: skipping coordinates that fall outside the field.
-        throw new UnsupportedOperationException("TODO");
+        int count = 0;
+        int totalRows = getRows();
+        int totalCols = getColumns();
+
+        for (int rDelta = -1; rDelta <= 1; rDelta++) {
+            for (int cDelta = -1; cDelta <= 1; cDelta++) {
+                // Skip the cell itself
+                if (rDelta == 0 && cDelta == 0) {
+                    continue;
+                }
+
+                int neighborRow = row + rDelta;
+                int neighborCol = column + cDelta;
+
+                // Check grid boundaries (cells outside count as dead)
+                if (neighborRow >= 0 && neighborRow < totalRows && neighborCol >= 0 && neighborCol < totalCols) {
+                    if (get(neighborRow, neighborCol) == ALIVE) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -88,9 +147,37 @@ public class GameOfLife extends Matrix {
      * @throws InterruptedException if the animation is interrupted while sleeping between frames
      */
     public static void main(String[] args) throws InterruptedException {
-        // TODO: create a game field, add at least a Blinker and a Glider, then run a fixed
-        // TODO: number of generations - read it from args[0] if present, else use 20:
-        // TODO:   print the field with a BoolMatrixPrinter, call step(), and Thread.sleep a little.
-        throw new UnsupportedOperationException("TODO");
+        System.out.println("=== Welcome to Conway's Game of Life Simulation ===");
+        System.out.println();
+
+        int generations = 20;
+        if (args != null && args.length > 0) {
+            try {
+                generations = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid generation count argument provided. Falling back to default (20).");
+            }
+        }
+
+        GameOfLife game = new GameOfLife(10, 15);
+
+        // Add a Blinker and a Glider pattern
+        game.addShape(Shape.blinker(), 1, 1);
+        game.addShape(Shape.glider(), 3, 6);
+
+        MatrixPrinter printer = new BoolMatrixPrinter();
+
+        for (int gen = 0; gen <= generations; gen++) {
+            System.out.println("Generation " + gen + ":");
+            System.out.print(printer.print(game));
+
+            if (gen < generations) {
+                Thread.sleep(300);
+                game.step();
+            }
+        }
+
+        System.out.println();
+        System.out.println("=== Game of Life Simulation Completed Successfully ===");
     }
 }
