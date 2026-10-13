@@ -26,6 +26,26 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>test</phase>
+            <goals>
+              <goal>checkstyle</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+          <failsOnError>true</failsOnError>
+          <consoleOutput>true</consoleOutput>
+          <outputFile>${project.build.directory}/checkstyle-report.xml</outputFile>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

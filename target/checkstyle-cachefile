@@ -1,0 +1,4 @@
+#Tue Oct 13 07:54:57 MST 2026
+configuration*?=86AFF8048E23E32C421583A9F679D0B6200809BD
+module-resource*?\:checkstyle-suppressions.xml=8F666CBCA43BBA986A98F144DCCA0165A953FB44
+module-resource*?\:checkstyle-xpath-suppressions.xml=DE29FAE642E3B1CA6DD46789D48FC0991AB7C9C
