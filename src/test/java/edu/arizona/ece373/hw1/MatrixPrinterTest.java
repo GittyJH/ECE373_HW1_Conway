@@ -58,18 +58,40 @@ class MatrixPrinterTest {
     }
 
     @Test
-    @Disabled("TODO: remove this annotation once you have written the test")
     @DisplayName("the boolean printer renders a second matrix of your choice")
     void boolPrinterRendersASecondMatrix() {
-        // TODO: pick a second 0/1 matrix with a different shape, write down the string you
-        // TODO: expect, and compare it with assertEquals.
+        // Pick a second 0/1 matrix with a different shape, write down the string you
+        Matrix matrix = new Matrix(new int[][] {
+                {1, 0},
+                {0, 1},
+                {1, 1}
+        });
+        // Expect, and compare it with assertEquals.
+        String expected = ""
+                + "+--+\n"
+                + "|10|\n"
+                + "|01|\n"
+                + "|11|\n"
+                + "+--+\n";
+
+        assertEquals(expected, new BoolMatrixPrinter().print(matrix));
     }
 
     @Test
-    @Disabled("TODO: remove this annotation once you have written the test")
     @DisplayName("a BoolMatrixPrinter used through the MatrixOutlinePrinter type still prints values")
     void overridingBeatsTheStaticType() {
-        // TODO: store a new BoolMatrixPrinter in a MatrixOutlinePrinter variable, print a
-        // TODO: matrix through it, and check that you see the values and not blanks.
+        // Store a new BoolMatrixPrinter in a MatrixOutlinePrinter variable, print a
+        MatrixOutlinePrinter printer = new BoolMatrixPrinter();
+        // Matrix through it, and check that you see the values and not blanks.
+        Matrix matrix = new Matrix(new int[][] {
+                {1, 0, 1}
+        });
+
+        String expected = ""
+                + "+---+\n"
+                + "|101|\n"
+                + "+---+\n";
+
+        assertEquals(expected, printer.print(matrix));
     }
 }
